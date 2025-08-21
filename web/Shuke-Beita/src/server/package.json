@@ -1,0 +1,15 @@
+{
+    "name": "leaderboard-server",
+    "version": "1.0.0",
+    "description": "Simple server for leaderboard",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js",
+      "dev": "node --watch server.js"
+    },
+    "dependencies": {
+      "cors": "^2.8.5", 
+      "dotenv": "^16.3.1",
+      "express": "^4.18.2"
+    }
+  }

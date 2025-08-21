@@ -1,0 +1,7 @@
+
+services:
+  su_ezstr:
+    build: .
+    image: su_ezstr
+    ports:
+      - "9997:9999"

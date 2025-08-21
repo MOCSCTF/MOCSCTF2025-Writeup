@@ -1,0 +1,17 @@
+service ctf
+{
+    disable         = no
+    socket_type     = stream
+    protocol        = tcp
+    wait            = no
+    user            = ctf
+    type            = UNLISTED
+    port            = 9999
+    bind            = 0.0.0.0
+    server          = /usr/bin/socat
+    server_args     = exec:'bash -li',pty,stderr,setsid,sigint,sane
+    banner_fail     = /etc/banner_fail
+    per_source      = 10
+    rlimit_cpu      = 20
+}
+

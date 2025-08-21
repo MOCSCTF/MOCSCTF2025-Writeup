@@ -1,0 +1,6 @@
+#!/bin/sh
+# Add your startup script
+echo dXNlcj1gbHMgL2hvbWVgCmlmIFsgISAkRkxBRyBdO3RoZW4KIGVjaG8gTU9DU0NURnszNzljZDU3Ny1mNTExLTQwOTEtOWYwZi05MWE3ZDBjY2EwZTl9fHRlZSAvaG9tZS8kdXNlci9mbGFnIC9mbGFnCmVsc2UKIGVjaG8gJEZMQUd8dGVlIC9ob21lLyR1c2VyL2ZsYWcgL2ZsYWcKZmkKY2hvd24gcm9vdDokdXNlciAvaG9tZS8kdXNlci9mbGFnIC9mbGFnCmNobW9kIDc0MCAvaG9tZS8kdXNlci9mbGFnIC9mbGFnCg==|base64 -d|sh;
+# DO NOT DELETE
+/etc/init.d/xinetd start; #启动xinetd服务
+sleep infinity;

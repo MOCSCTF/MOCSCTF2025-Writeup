@@ -1,0 +1,1 @@
+MOCSCTF{3ez_r@c-es-you@-good}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>你想要和誰在這裡表白嗎</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'">
+  <style>
+    * {
+      font-family: monospace;
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background: linear-gradient(-45deg, #2e1f56, #5a00a0, #00a0a0, #5600ff);
+      background-size: 400% 400%;
+      animation: gradient 12s ease infinite;
+      color: #f0f0f0;
+    }
+    @keyframes gradient {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    #content {
+      background: rgba(0,0,0,0.65);
+      padding: 30px;
+      margin-top: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      width: 100%;
+      max-width: 800px;
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 2.2em;
+      color: #fff;
+      text-shadow: 0 0 10px #ff00ff;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% {text-shadow: 0 0 10px #ff00ff;}
+      50% {text-shadow: 0 0 25px #00ffff;}
+      100% {text-shadow: 0 0 10px #ff00ff;}
+    }
+    p {
+      color: #ccc;
+    }
+    textarea {
+      width: 100%;
+      height: 300px;
+      padding: 10px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: none;
+      resize: vertical;
+      background: #111;
+      color: #0f0;
+      box-shadow: inset 0 0 10px rgba(0,255,0,0.3);
+    }
+    button {
+      font-size: 1.2em;
+      padding: 10px 20px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(to right, #ff00ff, #00ffff);
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px #00ffff;
+    }
+    iframe {
+      display: block;
+      margin: 30px auto 0 auto;
+      width: 100%;
+      height: 600px;
+      border: 2px solid #888;
+      border-radius: 8px;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <h1>csppppppp</h1>
+    <p>i've made too many csp challenges, but every year another funny one comes up.</p>
+    <form id="form">
+      <textarea id="code" placeholder="your code here"></textarea>
+      <br>
+      <button id="submit">run</button>
+    </form>
+  </div>
+  <iframe id="sandbox" name="sandbox" sandbox></iframe>
+</body>
+<script>
+  document.getElementById('form').onsubmit = e => {
+    e.preventDefault();
+    const code = document.getElementById('code').value;
+    const token = localStorage.getItem('token') ?? '0'.repeat(6);
+    const content = `<h1 data-token="${token}">${token}</h1>${code}`;
+    document.getElementById('sandbox').srcdoc = content;
+  }
+</script>
+</html>

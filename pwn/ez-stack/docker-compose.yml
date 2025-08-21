@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  ezstack:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: ezstack
+    ports:
+      - "9999:9999"
+    restart: unless-stopped
+    # privileged: true
+    # stdin_open: true
+    # tty: true

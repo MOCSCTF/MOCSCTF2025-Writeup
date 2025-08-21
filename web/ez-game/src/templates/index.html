@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTF挑战 - 首页</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 60px;
+            background-color: #f8f9fa;
+        }
+        .hero {
+            padding: 60px 0;
+            text-align: center;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">CTF挑战</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">首页</a>
+                    </li>
+                    {% if username %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/game">游戏</a>
+                    </li>
+                    {% if username == 'admin' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">管理员</a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav">
+                    {% if username %}
+                    <li class="nav-item">
+                        <span class="nav-link">欢迎, {{ username }} ({{ coins }}金币)</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">退出登录</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">登录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">注册</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="hero">
+            <h1>欢迎来到CTF挑战</h1>
+            <p class="lead">这是一个关于JWT和游戏逻辑漏洞的挑战</p>
+            {% if not username %}
+            <div>
+                <a href="/register" class="btn btn-primary me-2">注册</a>
+                <a href="/login" class="btn btn-secondary">登录</a>
+            </div>
+            {% else %}
+            <div>
+                <a href="/game" class="btn btn-success">开始游戏</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">猜数字游戏</h5>
+                        <p class="card-text">猜一个1到10之间的数字，猜对可以获得额外的金币奖励！</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">获取Flag</h5>
+                        <p class="card-text">积累足够的金币，就可以购买Flag！需要10000金币。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

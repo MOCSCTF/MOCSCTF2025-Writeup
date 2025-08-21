@@ -1,0 +1,6 @@
+services:
+  website:
+    build: .
+    image: website:2.0
+    ports:
+      - 8083:80

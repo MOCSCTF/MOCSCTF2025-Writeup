@@ -1,0 +1,15 @@
+service ctf
+{
+    disable         = no
+    socket_type     = stream
+    protocol        = tcp
+    port            = 9999
+    wait            = no
+    user            = ctf
+    type            = UNLISTED
+    server          = /home/ctf/chall
+    rlimit_as       = 256M
+    rlimit_cpu      = 30
+    rlimit_fsize    = 1M
+    log_on_failure  += USERID
+}

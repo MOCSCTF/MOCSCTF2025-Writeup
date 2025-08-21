@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .    
+      dockerfile: Dockerfile
+    container_name: ez_write
+    ports:
+      - "9997:80"
+    # volumes:
+    #   - ./src:/var/www/html
+    environment:
+      - LANG=zh_CN.UTF-8
+      - LANGUAGE=zh_CN:zh
+      - LC_ALL=zh_CN.UTF-8
+    restart: unless-stopped

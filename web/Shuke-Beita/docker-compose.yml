@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  leaderboard-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      # 端口映射保持不变
+      - "8088:5000"
+    # --- 移除 volumes 映射 ---
+    # volumes:
+    #   - leaderboard_data:/app/server/data # <--- 删除或注释掉这行
+    environment:
+      # 环境变量保持不变，用于传递密钥和端口
+      # - LEADERBOARD_API_SECRET=${LEADERBOARD_API_SECRET}
+      - SERVER_PORT=5000
+      # - NODE_ENV=production
+    restart: unless-stopped
+
+# --- 移除 volumes 顶层定义 ---
+# volumes:
+#   leaderboard_data: # <--- 删除或注释掉这部分
