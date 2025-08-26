@@ -1,0 +1,13 @@
+## flag
+
+MOCSCTF{291}
+
+## 解題步驟
+
+1. First you search the keyword "InfoStealer" and "Macau", you could find the INTERPOL operation in 2025. There is no disclosure how many malicious IP take down by Macau police
+https://www.interpol.int/en/News-and-Events/News/2025/20-000-malicious-IPs-and-domains-taken-down-in-INTERPOL-infostealer-crackdown
+
+2. When you found the article in 2024, it mentions Macau took 291 servers offline.
+https://www.interpol.int/News-and-Events/News/2024/INTERPOL-cyber-operation-takes-down-22-000-malicious-IP-addresses
+
+3. The flag is MOCSCTF{291}

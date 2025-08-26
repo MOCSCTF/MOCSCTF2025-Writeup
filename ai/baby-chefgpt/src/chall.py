@@ -10,7 +10,7 @@ def api_calling(prompt):
     model_name = "gpt-35-turbo"
     deployment = "gpt-35-turbo"
 
-    subscription_key = "5r1B4VJm6JEyC1abZFPl4lAuULouEzTkzX6pfV2l4uL7Svt4GfjOJQQJ99BFACYeBjFXJ3w3AAAAACOGb59s"
+    subscription_key = "put-your-subscription-key"
     api_version = "2024-12-01-preview"
 
     client = AzureOpenAI(
