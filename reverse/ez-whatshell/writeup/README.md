@@ -1,12 +1,16 @@
-# writeup説明
+## flag
+
+MOCSCTF{Th15_15_@n_Ez_p0wer5hell_plu5_b@5h5hell}
+
+## 解題步驟
 
 用hex編輯器查看附件會發現很多亂碼，但開頭是`#!/bin/sh`説明是這是一個bashshell腳本
 
 bash語言有個特性是反引號`可以作為混淆插入到很多linux命令中，例如如下指令仍然會執行打印Hello，但同時也會去找aa命令
 
-~~~bash
+```bash
 ec`aa`ho "Hello"
-~~~
+```
 
 因此開頭有個`exec 2>/dev/null`直接把stderr錯誤輸出重定向到丟棄，所以不會報錯
 
@@ -14,12 +18,12 @@ ec`aa`ho "Hello"
 
 去除完基本代碼如下
 
-~~~bash
+```bash
 #!/bin/sh
 exec 2>/dev/null
 export _1="xxxxx";
 echo "xxxx" | perl -pe 's/[^[:print:]]/\\n/g'| openssl base64 -d | pwsh -NoProfile -NonInteractive -Command -
-~~~
+```
 
 其中兩個字符串還是夾雜了大量亂碼字符
 
@@ -31,7 +35,7 @@ echo "xxxx" | perl -pe 's/[^[:print:]]/\\n/g'| openssl base64 -d | pwsh -NoProfi
 
 因此可知最終執行的是powershell代碼，可以通過去除`| pwsh -NoProfile -NonInteractive -Command -`直接看base64解密完的代碼
 
-~~~powershell
+```powershell
 function 0oO0oO0oO0oO0oO0
 {
     000ooo0o0ooo000o
@@ -74,11 +78,11 @@ function O00oo0ooOO0oO0oo
 
 0oO0oO0oO0oO0oO0
 
-~~~
+```
 
 有混淆大概分析下還原為如下代碼
 
-~~~powershell
+```powershell
 function main 
 {
     gen_charset_and_check
@@ -122,19 +126,19 @@ function openssl_dec
 
 main
 
-~~~
+```
 
 首先main通過gen_charset_and_check生成符號表，分析可知讀取了/etc/wgetrc裏的內容，然後排序並選出單獨的
 
-~~~powershell
+```powershell
 $tmp_charset = (-join ((&(Get-Command /???/cat) /?tc/*get*).tochararray() | sort-object | select-object -unique))
-~~~
+```
 
 可以直接在pwsh環境中運行查看可知charset值為
 
-~~~
+```
  !"#$'()*,-./0123568:<=>@ABCEFGHIKLMNOPRSTUVWXY_`abcdefghiklmnopqrstuvwxyz~
-~~~
+```
 
 然後根據值去還原每個命令
 
@@ -144,11 +148,11 @@ $tmp_charset = (-join ((&(Get-Command /???/cat) /?tc/*get*).tochararray() | sort
 
 所以正確做法可以直接將/etc/machine-id改為`Macao`，跑腳本即可打印flag `MOCSCTF{Th15_15_@n_Ez_p0wer5hell_plu5_b@5h5hell}`
 
-~~~bash
+```bash
 sudo cp /etc/machine-id /etc/machine-id.bak
 echo -n "Macao" | sudo tee /etc/machine-id 
 ./wh@t_1s_th1s 
 太強了，flag是 MOCSCTF{Th15_15_@n_Ez_p0wer5hell_plu5_b@5h5hell}
 sudo cp /etc/machine-id.bak /etc/machine-id 
-~~~
+```
 

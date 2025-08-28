@@ -1,8 +1,12 @@
-# writeup説明
+## flag
 
-ida反編譯main函數如下，很明顯sub_14BC生成密鑰，sub_1315加密，unk_4060是比較的值
+MOCSCTF{Th1s_1s_4n_Easy_x73a_ENcryp7I0n}
 
-~~~c++
+## 解題步驟
+
+1. ida反編譯main函數如下，很明顯sub_14BC生成密鑰，sub_1315加密，unk_4060是比較的值
+
+```c++
 __int64 __fastcall main(int a1, char **a2, char **a3)
 {
   _QWORD v4[2]; // [rsp+0h] [rbp-60h] BYREF
@@ -41,11 +45,11 @@ __int64 __fastcall main(int a1, char **a2, char **a3)
     return 1LL;
   }
 }
-~~~
+```
 
-查看sub_14BC，可以發現對main后1056字節做了MD5加密
+2. 查看sub_14BC，可以發現對main后1056字節做了MD5加密
 
-~~~c++
+```c++
 int *__fastcall sub_14BC(__int64 a1)
 {
   int *result; // rax
@@ -65,11 +69,11 @@ int *__fastcall sub_14BC(__int64 a1)
   }
   return result;
 }
-~~~
+```
 
-返回加密後的16字節作爲key傳入sub_1315，sub_1315如下
+3. 返回加密後的16字節作爲key傳入sub_1315，sub_1315如下
 
-~~~c++
+```c++
 __int64 __fastcall sub_1315(unsigned int *a1, __int64 a2)
 {
   unsigned int v2; // eax
@@ -126,11 +130,11 @@ __int64 __fastcall sub_1315(unsigned int *a1, __int64 a2)
   a1[1] = v22;
   return result;
 }
-~~~
+```
 
-一個個函數分析可知，每個函數都是一種運算，ida在函數名上按下n可以修改命名以幫助我們更好地分析加密算法，分析後的結果如下
+4. 一個個函數分析可知，每個函數都是一種運算，ida在函數名上按下n可以修改命名以幫助我們更好地分析加密算法，分析後的結果如下
 
-~~~c++
+```c++
 __int64 __fastcall sub_1315(unsigned int *a1, __int64 a2)
 {
   unsigned int v2; // eax
@@ -187,21 +191,21 @@ __int64 __fastcall sub_1315(unsigned int *a1, __int64 a2)
   a1[1] = v22;
   return result;
 }
-~~~
+```
 
-算法符合[XTEA加密](https://en.wikipedia.org/wiki/XTEA)特徵，但是魔改了三個地方
+5. 算法符合[XTEA加密](https://en.wikipedia.org/wiki/XTEA)特徵，但是魔改了三個地方
 
-1. 左移操作由標准的4改爲3
-2. DELTA值由標准的0x9E3779B9改爲了0x35303032（正好是“2025”）
-3. 額外多亦或了v0和v1
+- 左移操作由標准的4改爲3
+- DELTA值由標准的0x9E3779B9改爲了0x35303032（正好是“2025”）
+- 額外多亦或了v0和v1
 
-只需要寫出解密算法即可，但是可以發現MD5實現了文件校驗，如果我們直接動態調試到sub_1315獲取v4（key）值，拿到的是不正確的key（原因是IDA等調試器是通過插入0xCC實現斷點，此時改變了要校驗的1056字節）。這種做法本質上是一種反調試手段。
+6. 只需要寫出解密算法即可，但是可以發現MD5實現了文件校驗，如果我們直接動態調試到sub_1315獲取v4（key）值，拿到的是不正確的key（原因是IDA等調試器是通過插入0xCC實現斷點，此時改變了要校驗的1056字節）。這種做法本質上是一種反調試手段。
 
-正確做法是動態調試到MD5_Update前，**取消所有斷點**，F8執行萬MD5_Update和MD5_Final，然後回到main在sub_1315前下斷點，F9停下后v4就是正確的key值，提取16字節出來為4個DWORD大小
+7. 正確做法是動態調試到MD5_Update前，**取消所有斷點**，F8執行萬MD5_Update和MD5_Final，然後回到main在sub_1315前下斷點，F9停下后v4就是正確的key值，提取16字節出來為4個DWORD大小
 
 python解密脚本如下
 
-~~~python
+```python
 from ctypes import c_uint32
 
 
@@ -224,7 +228,5 @@ if __name__ == "__main__":
     v = "".join([int.to_bytes(v[i], byteorder='little', length=4).decode() for i in range(len(v))])
     print(v)
 
-# flag: MOCSCTF{Th1s_1s_4n_Easy_x73a_ENcryp7I0n}
-~~~
+```
 
-flag是`MOCSCTF{Th1s_1s_4n_Easy_x73a_ENcryp7I0n}`

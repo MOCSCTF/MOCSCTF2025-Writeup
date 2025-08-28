@@ -4,11 +4,11 @@ ez_enc
 
 ## 題目類型
 
-Reverse
+reverse
 
 ## 題目難度
 
-2
+3星
 
 ## 題目説明
 

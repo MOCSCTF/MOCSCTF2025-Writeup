@@ -1,38 +1,42 @@
-# Rev ez_element Writeup
+## flag
 
-1.尝试运行程序，发现程序会输出加密后的结果，以元素的形式输出，然后告知验证是否成功
+MOCSCTF{El3m3nt_1s_E4sy!}
 
-![image-20250603101421335](https://raw.githubusercontent.com/quietdawn/picture/main/image-20250603101421335.png)
+## 解題步驟
 
-2.die查壳，发现是upx壳但是modified
+1.嘗試執行程序，發現程式會輸出加密後的結果，以元素的形式輸出，然後告知驗證是否成功
 
-![image-20250603101025790](https://raw.githubusercontent.com/quietdawn/picture/main/image-20250603101025790.png)
+![1.png](img/1.png)
 
-010查看魔改的部分
+2.die查殼，發現是upx殼但是modified
 
-![image-20250603101058465](https://raw.githubusercontent.com/quietdawn/picture/main/image-20250603101058465.png)
+![2.png](img/2.png)
 
-UPX0 UPX1 UPX！均被改成了AUTO，改回来即可正常脱壳（实际版本是4.23）
+3. 010查看魔改的部分
 
-3.upx -d脱壳得到目标程序
+![3.png](img/3.png)
 
-通过字符串定义找到主函数
+4. UPX0 UPX1 UPX！都改成了AUTO，改回來即可正常脫殼（實際版本是4.23）
 
-![image-20250603101255913](https://raw.githubusercontent.com/quietdawn/picture/main/image-20250603101255913.png)
+3.upx -d脫殼得到目標程序
 
-主函数里面定义了两个加密，一个rc4一个base64
+5. 透過字串定義找到主函數
 
-![image-20250603101545781](https://raw.githubusercontent.com/quietdawn/picture/main/image-20250603101545781.png)
+![4.png](img/4.png)
 
-![image-20250603101608523](https://raw.githubusercontent.com/quietdawn/picture/main/image-20250603101608523.png)
+6. 主函數裡面定義了兩個加密，一個rc4一個base64
 
-但是注意到base64的表做了替换，换成了中文元素（CP396格式显示就能看到中文）
+![5.png](img/5.png)
 
-![image-20250603101717172](https://raw.githubusercontent.com/quietdawn/picture/main/image-20250603101717172.png)
+![6.png](img/6.png)
 
-rc4的密钥是Misuha，base64的码表是氢氦锂铍硼碳氮氧氟氖钠镁铝硅磷硫氯氩钾钙钪钛钒铬锰铁钴镍铜锌镓锗砷硒溴氪铷锶钇锆铌钼锝钌铑钯银镉铟锡锑碲碘氙铯钡镧铈镨钕钷钐铕钆，金相当于替换了=
+7. 但注意到base64的表做了替換，換成了中文元素（CP396格式顯示就能看到中文）
 
-我们先解base64，然后解rc4，即可得到flag
+![7.png](img/7.png)
+
+8. rc4的金鑰是Misuha，base64的碼表是氢氦锂铍硼碳氮氧氟氖钠镁铝硅磷硫氯氩钾钙钪钛钒铬锰铁钴镍铜锌镓锗砷硒溴氪铷锶钇锆铌钼锝钌铑钯银镉铟锡锑碲碘氙铯钡镧铈镨钕钷钐铕钆，金相当于替换了=
+
+9. 我們先解base64，然後解rc4，即可得到flag
 
 exp如下：
 
@@ -112,5 +116,3 @@ if __name__ == "__main__":
     decrypted_text = decrypt_custom_base64(encoded_str, key)
     print(f"{decrypted_text}")
 ```
-
-最后得到flag：MOCSCTF{El3m3nt_1s_E4sy!}
